@@ -1,142 +1,68 @@
-#btnAdd {
-    width: 150px;
+.switchFlash {
+    z-index: 100;
     position: fixed;
-    top: 4px;
-    left: 22px;
-    border: solid 3px #0072b1;
-    background-color: #eef3f8;
-    color: rgba(0,0,0,0.6);
-    border-radius: 5px;
-    font-weight: 700;
-    padding: 7px 15px;
-    font-size: 18px;
-    letter-spacing: 3px;
-    z-index: 1000000;
+    top: 7rem;
+    left: 1rem;
 }
-#btnDelete {
-    width: 150px;
-    position: fixed;
-    top: 100px;
-    left: 22px;
-    border: solid 3px #0072b1;
-    background-color: #eef3f8;
-    color: rgba(0,0,0,0.6);
-    border-radius: 5px;
-    font-weight: 700;
-    padding: 7px 15px;
-    font-size: 18px;
-    letter-spacing: 3px;
-    z-index: 1000000;
-}
-#stop {
-     width: 150px;
-    position: fixed;
-    top: 52px;
-    left: 22px;
-    border: solid 3px #0072b1;
-    background-color: #eef3f8;
-    color: rgba(0,0,0,0.6);
-    border-radius: 5px;
-    font-weight: 700;
-    padding: 7px 15px;
-    font-size: 18px;
-    letter-spacing: 3px;
-    z-index: 1000000;
-    text-align: center;
-}
-#rdm {
+/* The switch - the box around the slider */
+.switchFlash {
+    /* position: relative;
+    display: inline-block; */
+    width: 60px;
+    height: 34px;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switchFlash input {
     opacity: 0;
-    width: 150px;
-    position: fixed;
-    top: 148px;
-    left: 22px;
-    border: solid 3px #0072b1;
-    background-color: #eef3f8;
-    color: rgba(0,0,0,0.6);
-    border-radius: 5px;
-    font-weight: 700;
-    padding: 7px 15px;
-    font-size: 18px;
-    letter-spacing: 3px;
-    z-index: 1000000;
-    text-align: center;
-    transition: opacity 2s;
-}
-#rdm.timer {
-    opacity: 1;
-    transition: opacity 2s;
-}
-#go {
-    width: 150px;
-    position: fixed;
-    top: 200px;
-    left: 22px;
-    border: solid 3px #0072b1;
-    background-color: #eef3f8;
-    color: rgba(0,0,0,0.6);
-    border-radius: 5px;
-    font-weight: 700;
-    padding: 7px 15px;
-    font-size: 18px;
-    letter-spacing: 3px;
-    z-index: 1000000;
-    text-align: center;
-}
-
-.flex {
-    display: flex;
-}
-
-.labelSliderMax, .inputSlider{
-    /* background-color: aqua; */
-    border: none;
-    outline: none;
-    box-shadow: none;
-    /* max-width: fit-content; */
-  /*  */
-}
-.labelSliderMax::selection , .inputSlider:selection{
-    border: none;
-    outline: none;
-    box-shadow: none;
-}
-.labelSliderMax::hover , .inputSlider:hover{
-    border: none;
-    outline: none;
-    box-shadow: none;
-}
-
-.labelSliderMax, .labelSliderMin {
-    min-width: 23px;
-    font-weight: 600;
-    margin: 0;
-    margin-left: 2 px;
-}
-.containerSliderMax, .containerSliderMin{
-    margin-left: 5px;
-    align-items: center;
-    position: fixed;
-    left: -161px;
-    /* left: 0; */
-    top: 199px;
-    transition: all 0.5s;
-    z-index: 1000000;
-    background-color: rgb(165, 165, 164);
-    padding: 4px;
-    border-radius: 5px;
-}
-.containerSliderMax{
-    top: 230px;
-}
-
-.containerSliderMax.clicked, .containerSliderMin.clicked {
-    left: 5px;
-}
-.btnSettings{
-    width: 28px;
-    height: 28px;
-    margin-left: 4px;
-    background-image: url('https://cdn-icons-png.flaticon.com/512/484/484613.png');
-     background-size: cover;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
     cursor: pointer;
-}
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }

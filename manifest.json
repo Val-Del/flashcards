@@ -1,7 +1,7 @@
 {
-  "name": "ezLinkedin",
-  "description": "Ajouter des contacts automatiquement sur Linkedin, Valentin Bruneel",
-  "version": "2.0",
+  "name": "flashcards",
+  "description": "Add flashcards from test bank, Valentin Bruneel",
+  "version": "1.0",
   "manifest_version": 3,
   "icons": {
     "16": "/images/get_started16.png",
@@ -10,7 +10,7 @@
     "128": "/images/get_started128.png"
   },
   "content_scripts": [{
-      "matches": ["https://www.linkedin.com/*"],
+    "matches": ["https://app.hellovaia.com/*"],
       "js": ["script.js"],
       "css": ["main.css"],
       "run_at": "document_end"
