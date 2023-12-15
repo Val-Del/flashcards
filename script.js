@@ -16,21 +16,120 @@ label.appendChild(input);
 label.appendChild(span);
 document.body.appendChild(label);
 
-// Event listener for selected text
-document.addEventListener('mouseup', function() {
-    var selectedText = getSelectedText();
-    console.log('Selected Text:', selectedText);
+document.addEventListener('paste', function(event) {
+        // Prevent the default paste behavior
+        event.preventDefault();
+
+        // Handle the paste event
+        // console.log(event.clipboardData.getData('text'));
+        text = event.clipboardData.getData('text')
+        question = text.split("a.");
+        questionHolder = document.querySelector('.question').querySelector('p')
+        questionHolder.innerHTML = question[0]
+
+        var lines = text.split('\n');
+
+    var answerA, answerB, answerC, answerD, answerCorrect;
+    var answerCount = 0
+    //fix for format issue and empty lines
+    var answerAEmpty = false;
+    var answerBEmpty = false;
+    var answerCEmpty = false;
+    var answerDEmpty = false;
+
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();  // Trim to remove leading and trailing whitespaces
+        // console.log(line);
+
+        if (answerAEmpty) {
+            answerA = line;
+            answerAEmpty = false;
+        } else if (line.startsWith("a.")) {
+            line = line.replace("a.", "").trim();
+            answerCount++
+            if (line !== '') {
+                answerA = line;
+            } else {
+                answerAEmpty = true;
+            }
+        }
+
+        if (answerBEmpty) {
+            answerB = line;
+            answerBEmpty = false;
+        } else if (line.startsWith("b.")) {
+            line = line.replace("b.", "").trim();
+            answerCount++
+            if (line !== '') {
+                answerB = line;
+            } else {
+                answerBEmpty = true;
+            }
+        }
+
+        if (answerCEmpty) {
+            answerC = line;
+            answerCEmpty = false;
+        } else if (line.startsWith("c.")) {
+            line = line.replace("c.", "").trim();
+            answerCount++
+            if (line !== '') {
+                answerC = line;
+            } else {
+                answerCEmpty = true;
+            }
+        }
+
+        if (answerDEmpty) {
+            answerD = line;
+            answerDEmpty = false;
+        } else if (line.startsWith("d.")) {
+            line = line.replace("d.", "").trim();
+            answerCount++
+            if (line !== '') {
+                answerD = line;
+            } else {
+                answerDEmpty = true;
+            }
+        }
+
+        if (line.startsWith("ANS: ")) {
+            answerCorrect = line.replace("ANS: ", "").trim();
+        }
+    }
+
+    console.log(answerA);
+    console.log(answerB);
+    console.log(answerC);
+    console.log(answerD);
+    console.log(answerCorrect);
+
+    //add answer if needed
+
+    moreAnswers = document.querySelector('.create-flashcard-more-options-add-answer')
+    console.log(answerCount)
+    //add the answers' boxes
+    for (let index = 1; index < answerCount; index++) {
+        moreAnswers.click()
+    }
+    
+    //add the answers to the boxes
+    // answersWrapper = document.querySelector('[formarrayname="answers"]')
+    // console.log(answersWrapper)
+    // Wait for a moment that the boxes are added to the DOM
+    // fix ajax
+    setTimeout(function() {
+        // Add the answers to the boxes
+        answersElements = document.querySelectorAll('.answer p');
+        console.log(answersElements);
+        answersElements.forEach(element => {
+            element.innerHTML = 'test';
+        });
+    }, 1000); // Adjust the delay as needed
+
 });
 
-function getSelectedText() {
-    var selectedText = '';
-    if (window.getSelection) {
-        selectedText = window.getSelection().toString();
-    } else if (document.selection && document.selection.type !== 'Control') {
-        selectedText = document.selection.createRange().text;
-    }
-    return selectedText;
-}
+
 
 // let keepGoing = true
 
