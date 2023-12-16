@@ -50,6 +50,7 @@ document.addEventListener('paste', function(event) {
     var answerCEmpty = false;
     var answerDEmpty = false;
 
+    //get answers into variables
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].trim();  // Trim to remove leading and trailing whitespaces
         // console.log(line);
@@ -139,31 +140,56 @@ document.addEventListener('paste', function(event) {
             if (answerA) {
                 element.innerHTML = answerA;
                 element.dispatchEvent(spaceKeyPress);
+                if(!correctAnswerContains('A', answerCorrect)){
+                   answerHeader = element.closest('#answer-area').previousSibling
+                   console.log(answerHeader)
+                   answerHeader.querySelector('.switch').click()           
+                }
                 answerA = '';
+                
             }
             else if (answerB) {
                 element.innerHTML = answerB;
                 element.dispatchEvent(spaceKeyPress);
+                if(correctAnswerContains('B', answerCorrect)){
+                    answerHeader = element.closest('#answer-area').previousSibling
+                    console.log(answerHeader)
+                    answerHeader.querySelector('.switch').click()          
+                   
+                 }
                 answerB = '';
             }
             else if (answerC) {
                 element.innerHTML = answerC;
                 element.dispatchEvent(spaceKeyPress);
+                if(correctAnswerContains('C', answerCorrect)){
+                    answerHeader = element.closest('#answer-area').previousSibling
+                    console.log(answerHeader)
+                    answerHeader.querySelector('.switch').click()          
+                   
+                 }
                 answerC = '';
             }
             else if (answerD) {
                 element.innerHTML = answerD;
                 element.dispatchEvent(spaceKeyPress);
+                if(correctAnswerContains('D', answerCorrect)){
+                    answerHeader = element.closest('#answer-area').previousSibling
+                    console.log(answerHeader)
+                    answerHeader.querySelector('.switch').click()          
+                   
+                 }
                 answerD = '';
             }
         });
     }, 500); // Adjust the delay as needed
 
 });
-
-
-
-
+function correctAnswerContains(numberToCheck, answer){
+    if(numberToCheck == answer){
+        return true
+    }else  { return false }
+}
 
 
 // let keepGoing = true
