@@ -16,6 +16,18 @@ label.appendChild(input);
 label.appendChild(span);
 document.body.appendChild(label);
 
+let keepGoing = true
+
+// Simulate a space key press
+// Fix to trigger eventlisteners
+const spaceKeyPress = new KeyboardEvent('keydown', {
+    key: ' ',
+    bubbles: true,
+    cancelable: true,
+    code: 'Space',
+    keyCode: 32,
+});
+
 document.addEventListener('paste', function(event) {
         // Prevent the default paste behavior
         event.preventDefault();
@@ -26,6 +38,7 @@ document.addEventListener('paste', function(event) {
         question = text.split("a.");
         questionHolder = document.querySelector('.question').querySelector('p')
         questionHolder.innerHTML = question[0]
+        questionHolder.dispatchEvent(spaceKeyPress);
 
         var lines = text.split('\n');
 
@@ -113,21 +126,43 @@ document.addEventListener('paste', function(event) {
         moreAnswers.click()
     }
     
-    //add the answers to the boxes
     // answersWrapper = document.querySelector('[formarrayname="answers"]')
     // console.log(answersWrapper)
-    // Wait for a moment that the boxes are added to the DOM
+
+    // Wait that the boxes are added to the DOM
     // fix ajax
     setTimeout(function() {
         // Add the answers to the boxes
         answersElements = document.querySelectorAll('.answer p');
         console.log(answersElements);
         answersElements.forEach(element => {
-            element.innerHTML = 'test';
+            if (answerA) {
+                element.innerHTML = answerA;
+                element.dispatchEvent(spaceKeyPress);
+                answerA = '';
+            }
+            else if (answerB) {
+                element.innerHTML = answerB;
+                element.dispatchEvent(spaceKeyPress);
+                answerB = '';
+            }
+            else if (answerC) {
+                element.innerHTML = answerC;
+                element.dispatchEvent(spaceKeyPress);
+                answerC = '';
+            }
+            else if (answerD) {
+                element.innerHTML = answerD;
+                element.dispatchEvent(spaceKeyPress);
+                answerD = '';
+            }
         });
-    }, 1000); // Adjust the delay as needed
+    }, 500); // Adjust the delay as needed
 
 });
+
+
+
 
 
 
