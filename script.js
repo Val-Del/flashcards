@@ -44,6 +44,8 @@ document.addEventListener('paste', function(event) {
 
     var answerA, answerB, answerC, answerD, answerCorrect;
     var answerCount = 0
+        //fix for questions with images
+        var fixImage;
     //fix for format issue and empty lines
     var answerAEmpty = false;
     var answerBEmpty = false;
@@ -53,9 +55,23 @@ document.addEventListener('paste', function(event) {
     //get answers into variables
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].trim();  // Trim to remove leading and trailing whitespaces
-        // console.log(line);
-
-        if (answerAEmpty) {
+        console.log(line);
+        if (!line.startsWith("a.") && !line.startsWith("b.") && !line.startsWith("c.") && !line.startsWith("d.")&& !line.startsWith("ANS") && line.trim() != question[0].trim()) {
+            fixImage = line;
+            console.log('condition',line);
+            // console.log(question[0])
+            // console.log('here')
+            // if (!answerA) {
+            //     answerA = line;
+            // }else if (!answerB) {
+            //     answerB = line
+            // }else if (!answerC) {
+            //     answerC = line
+            // }else if (!answerD) {
+            //     answerD = line
+            // }
+        }
+        if (answerAEmpty && !line.startsWith("b.") && !line.startsWith("c.") && !line.startsWith("d.") && !line.startsWith("ANS")) {
             answerA = line;
             answerAEmpty = false;
         } else if (line.startsWith("a.")) {
@@ -68,7 +84,7 @@ document.addEventListener('paste', function(event) {
             }
         }
 
-        if (answerBEmpty) {
+        if (answerBEmpty && !line.startsWith("a.") && !line.startsWith("c.") && !line.startsWith("d.") && !line.startsWith("ANS")) {
             answerB = line;
             answerBEmpty = false;
         } else if (line.startsWith("b.")) {
@@ -81,7 +97,8 @@ document.addEventListener('paste', function(event) {
             }
         }
 
-        if (answerCEmpty) {
+        if (answerCEmpty && !line.startsWith("b.") && !line.startsWith("a.") && !line.startsWith("d.") && !line.startsWith("ANS")) {
+            // console.log(line)
             answerC = line;
             answerCEmpty = false;
         } else if (line.startsWith("c.")) {
@@ -94,7 +111,7 @@ document.addEventListener('paste', function(event) {
             }
         }
 
-        if (answerDEmpty) {
+        if (answerDEmpty && !line.startsWith("b.") && !line.startsWith("c.") && !line.startsWith("a.") && !line.startsWith("ANS")) {
             answerD = line;
             answerDEmpty = false;
         } else if (line.startsWith("d.")) {
@@ -111,12 +128,21 @@ document.addEventListener('paste', function(event) {
             answerCorrect = line.replace("ANS: ", "").trim();
         }
     }
-
-    console.log(answerA);
-    console.log(answerB);
-    console.log(answerC);
-    console.log(answerD);
-    console.log(answerCorrect);
+//fix format images
+    if (!answerA && fixImage) {
+        answerA = fixImage;
+    }else if (!answerB && fixImage) {
+        answerB = fixImage;
+    }else if (!answerC && fixImage) {
+        answerC = fixImage;
+    }else if (!answerD && fixImage) {
+        answerD = fixImage;
+    }
+    console.log('a: ',answerA);
+    console.log('b: ',answerB);
+    console.log('c: ',answerC);
+    console.log('d: ',answerD);
+    console.log('acorrect: ',answerCorrect);
 
     //add answer if needed
 
