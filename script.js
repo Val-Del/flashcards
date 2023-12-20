@@ -228,12 +228,16 @@ document.addEventListener('paste', function(event) {
     }, 500); // Adjust the delay as needed
 
 });
-function correctAnswerContains(numberToCheck, answer){
-    if(numberToCheck == answer){
-        return true
-    }else  { return false }
+function correctAnswerContains(numberToCheck, answer) {
+    // Multi answers
+    if (answer.includes(',')) {
+        const answers = answer.split(',');
+        return answers.some(element => element.trim() === numberToCheck);
+    } else {
+        // Single answer check
+        return numberToCheck === answer.trim();
+    }
 }
-
 
 // let keepGoing = true
 
