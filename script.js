@@ -53,28 +53,17 @@ document.addEventListener('paste', function(event) {
     var answerCEmpty = false;
     var answerDEmpty = false;
 
+
     //get answers into variables
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].trim();  // Trim to remove leading and trailing whitespaces
         console.log(line);
         if (!line.startsWith("a.") && !line.startsWith("b.") && !line.startsWith("c.") && !line.startsWith("d.")&& !line.startsWith("ANS") && line.trim() != question[0].trim()&& !answerAEmpty && !answerBEmpty && !answerCEmpty && !answerDEmpty) {
-            if (!fixImage) {
+            if (!fixImage && question) {
                 fixImage = line;
-            }else if (!fixImage2) {
+            }else if (!fixImage2 && question) {
                 fixImage2 = line;
             }
-            console.log('condition',line);
-            // console.log(question[0])
-            // console.log('here')
-            // if (!answerA) {
-            //     answerA = line;
-            // }else if (!answerB) {
-            //     answerB = line
-            // }else if (!answerC) {
-            //     answerC = line
-            // }else if (!answerD) {
-            //     answerD = line
-            // }
         }
         if (answerAEmpty && !line.startsWith("b.") && !line.startsWith("c.") && !line.startsWith("d.") && !line.startsWith("ANS")) {
             answerA = line;
@@ -133,7 +122,18 @@ document.addEventListener('paste', function(event) {
             answerCorrect = line.replace("ANS: ", "").trim();
         }
     }
-//fix format images
+    
+    //case true false
+    var bool = false
+    if (answerCount < 2) {
+        question = text.split("ANS");
+        questionHolder = document.querySelector('.question').querySelector('p')
+        questionHolder.innerHTML = question[0]
+        questionHolder.dispatchEvent(spaceKeyPress);
+        answerCount=2
+        bool = true
+    }
+    //fix format images
     if (!answerA && fixImage) {
         answerA = fixImage;
     }else if (!answerB && fixImage) {
@@ -177,253 +177,93 @@ document.addEventListener('paste', function(event) {
     // fix ajax
     setTimeout(function() {
         // Add the answers to the boxes
-        answersElements = document.querySelectorAll('.answer p');
-        console.log(answersElements);
-        answersElements.forEach(element => {
-            if (answerA) {
-                element.innerHTML = answerA;
-                element.dispatchEvent(spaceKeyPress);
-                if(!correctAnswerContains('A', answerCorrect)){
-                   answerHeader = element.closest('#answer-area').previousSibling
-                   console.log(answerHeader)
-                   answerHeader.querySelector('.switch').click()           
+        answersElements = document.querySelectorAll('.answer p')
+        if (!bool) {
+            answersElements.forEach(element => {
+                if (answerA) {
+                    element.innerHTML = answerA;
+                    element.dispatchEvent(spaceKeyPress);
+                    if(!correctAnswerContains('A', answerCorrect)){
+                       answerHeader = element.closest('#answer-area').previousSibling
+                       console.log(answerHeader)
+                       answerHeader.querySelector('.switch').click()           
+                    }
+                    answerA = '';
+                    
                 }
-                answerA = '';
-                
-            }
-            else if (answerB) {
-                element.innerHTML = answerB;
-                element.dispatchEvent(spaceKeyPress);
-                if(correctAnswerContains('B', answerCorrect)){
-                    answerHeader = element.closest('#answer-area').previousSibling
-                    console.log(answerHeader)
-                    answerHeader.querySelector('.switch').click()          
-                   
-                 }
-                answerB = '';
-            }
-            else if (answerC) {
-                element.innerHTML = answerC;
-                element.dispatchEvent(spaceKeyPress);
-                if(correctAnswerContains('C', answerCorrect)){
-                    answerHeader = element.closest('#answer-area').previousSibling
-                    console.log(answerHeader)
-                    answerHeader.querySelector('.switch').click()          
-                   
-                 }
-                answerC = '';
-            }
-            else if (answerD) {
-                element.innerHTML = answerD;
-                element.dispatchEvent(spaceKeyPress);
-                if(correctAnswerContains('D', answerCorrect)){
-                    answerHeader = element.closest('#answer-area').previousSibling
-                    console.log(answerHeader)
-                    answerHeader.querySelector('.switch').click()          
-                   
-                 }
-                answerD = '';
-            }
-        });
+                else if (answerB) {
+                    element.innerHTML = answerB;
+                    element.dispatchEvent(spaceKeyPress);
+                    if(correctAnswerContains('B', answerCorrect)){
+                        answerHeader = element.closest('#answer-area').previousSibling
+                        console.log(answerHeader)
+                        answerHeader.querySelector('.switch').click()          
+                       
+                     }
+                    answerB = '';
+                }
+                else if (answerC) {
+                    element.innerHTML = answerC;
+                    element.dispatchEvent(spaceKeyPress);
+                    if(correctAnswerContains('C', answerCorrect)){
+                        answerHeader = element.closest('#answer-area').previousSibling
+                        console.log(answerHeader)
+                        answerHeader.querySelector('.switch').click()          
+                       
+                     }
+                    answerC = '';
+                }
+                else if (answerD) {
+                    element.innerHTML = answerD;
+                    element.dispatchEvent(spaceKeyPress);
+                    if(correctAnswerContains('D', answerCorrect)){
+                        answerHeader = element.closest('#answer-area').previousSibling
+                        console.log(answerHeader)
+                        answerHeader.querySelector('.switch').click()          
+                       
+                     }
+                    answerD = '';
+                }
+            });
+        }else {
+            trueAnswer = answersElements[0]
+            trueAnswer.innerHTML = 'True'
+            trueAnswer.dispatchEvent(spaceKeyPress);
+
+            
+            falseAnswer = answersElements[1]
+            falseAnswer.innerHTML = 'False'
+            falseAnswer.dispatchEvent(spaceKeyPress);
+
+            if(!correctAnswerContains('T', answerCorrect)){ 
+                console.log('false')
+                answerHeaderTrue = trueAnswer.closest('#answer-area').previousSibling
+                answerHeaderTrue.querySelector('.switch').click()
+
+                answerHeaderFalse = falseAnswer.closest('#answer-area').previousSibling
+                answerHeaderFalse.querySelector('.switch').click()
+             }
+             else {
+                console.log('true')
+             }
+
+            
+        }
     }, 500); // Adjust the delay as needed
 
 });
 function correctAnswerContains(numberToCheck, answer) {
+    console.log(numberToCheck)
+    console.log(answer)
+
     // Multi answers
-    if (answer.includes(',')) {
-        const answers = answer.split(',');
-        return answers.some(element => element.trim() === numberToCheck);
-    } else {
-        // Single answer check
-        return numberToCheck === answer.trim();
+    if (answer) {
+        if (answer.includes(',')) {
+            const answers = answer.split(',');
+            return answers.some(element => element.trim() === numberToCheck);
+        } else {
+            // Single answer check
+            return numberToCheck === answer.trim();
+        }
     }
 }
-
-// let keepGoing = true
-
-// let rdmNumber = document.createElement("p");
-// rdmNumber.innerHTML = "Random";
-// rdmNumber.id = "rdm";
-// document.body.appendChild(rdmNumber);
-
-// let btnAdd = document.createElement("button");
-// btnAdd.innerHTML = "Ajout";
-// btnAdd.type = "submit";
-// btnAdd.name = "addLinkedinAuto";
-// btnAdd.id = "btnAdd";
-// btnAdd.onclick = function () {
-//     keepGoing = true
-//     var buttons = document.querySelectorAll('.artdeco-modal__content footer .artdeco-button__text');
-//     var index = 0;
-//     function timeOut() {
-//         if (keepGoing === true && isModalOpen()==true) {
-//             setTimeout(() => {
-//                 if (buttons[index] == undefined) {
-//                     buttons = document.querySelectorAll('.artdeco-modal__content footer .artdeco-button__text');
-//                 }
-//                 buttons[index++].click();
-//                 timeOut()
-//             }, random(1000, 2000))
-//         } else {
-//             rdmNumber.innerHTML = "Arrêt";
-//         }
-//     }
-//     timeOut()
-// };
-
-// document.body.appendChild(btnAdd);
-
-// let btnDelete = document.createElement("button");
-// btnDelete.innerHTML = "Supprime";
-// btnDelete.type = "submit";
-// btnDelete.name = "addLinkedinAuto";
-// btnDelete.id = "btnDelete";
-// btnDelete.onclick = function () {
-//     keepGoing = true
-//     var buttons = document.querySelectorAll('.invitation-card__action-container .artdeco-button__text')
-//     buttons
-//     var index = 0;
-//     function timeOutDel() {
-//         if (keepGoing === true) {
-//             setTimeout(() => {
-//                 if (buttons[index] == undefined) {
-//                     buttons = document.querySelectorAll('.invitation-card__action-container .artdeco-button__text');
-//                 }
-//                 buttons[index++].click();
-//                 setTimeout(() => { document.querySelector('.artdeco-modal--layer-confirmation .artdeco-button--primary').click(); }, 1000);
-//                 timeOutDel()
-//             }, random(4000, 9000))
-//         }
-//     }
-//     timeOutDel()
-// };
-// document.body.appendChild(btnDelete);
-
-
-// let stop = document.createElement("button");
-// stop.innerHTML = "Stop";
-// stop.type = "submit";
-// stop.id = "stop";
-// stop.onclick = function () {
-//     keepGoing = false
-//     rdmNumber.innerHTML = "Arrêt";
-//     rdmNumber.classList.remove('timer')
-// }
-// document.body.appendChild(stop);
-
-// function random() {
-//     min = inputSliderMin.value * 1000
-//     console.log(min)
-//     max = inputSliderMax.value * 1000
-//     console.log(max)
-//     let rdm = 0
-
-//     rdm = Math.floor(Math.random() * (max - min + 1) + min)
-//     rdm = Math.floor(rdm/100)*100; //arrondir ex : 5112 > 5100 
-//     decreaseTimer(rdm)
-//     console.log(rdm)
-//     return rdm
-// }
-// function decreaseTimer(timer){
-//         rdmNumber.classList.add('timer')
-//         rdmNumber.innerHTML = timer;
-//         let chrono = setInterval(() => {
-//             if (keepGoing === true) {
-//                 if (timer<100) {
-//                     rdmNumber.innerHTML = 0;
-//                     clearInterval(chrono);
-//                 }else {
-//                     timer -= 100;
-//                     rdmNumber.innerHTML = timer;
-//                 }   
-//             } else {
-//                 clearInterval(chrono);
-//             }     
-                
-//         }, 100);
-    
-// }
-
-// let containerSliderMax = document.createElement("div");
-// containerSliderMax.classList.add('containerSliderMax');
-// containerSliderMax.classList.add('flex');
-// containerSliderMax.setAttribute('title', 'Interval maximum');
-// document.body.appendChild(containerSliderMax);
-
-// let labelSliderMax = document.createElement("label");
-// labelSliderMax.classList.add('labelSliderMax');
-// labelSliderMax.innerHTML = "5s"
-// containerSliderMax.appendChild(labelSliderMax);
-
-// let inputSliderMax = document.createElement("input")
-// inputSliderMax.classList.add('inputSlider');
-// inputSliderMax.type = "range";
-// inputSliderMax.value = 5;
-// inputSliderMax.max = 12;
-// inputSliderMax.min = 0;
-// inputSliderMax.step = 1;
-// inputSliderMax.oninput = function () {
-    
-//     if (parseInt(this.value) < parseInt(inputSliderMin.value)) {
-//         inputSliderMin.value = this.value;
-//         labelSliderMin.innerHTML = inputSliderMax.value + "s";
-//     }
-//     labelSliderMax.innerHTML = this.value + "s";
-    
-// }
-
-
-// containerSliderMax.appendChild(inputSliderMax);
-
-// let btnSetting =document.createElement("div");
-// btnSetting.classList.add('btnSettings');
-// containerSliderMax.appendChild(btnSetting);
-
-// btnSetting.addEventListener('click', function(event) {
-//     containerSliderMax.classList.toggle('clicked');
-// });
-
-// //interval minimum
-// let containerSliderMin = document.createElement("div");
-// containerSliderMin.classList.add('containerSliderMin');
-// containerSliderMin.classList.add('flex');
-// containerSliderMin.setAttribute('title', 'Interval minimum');
-// document.body.appendChild(containerSliderMin);
-
-// let labelSliderMin = document.createElement("label");
-// labelSliderMin.classList.add('labelSliderMin');
-// labelSliderMin.innerHTML = "3s"
-// containerSliderMin.appendChild(labelSliderMin);
-
-// let inputSliderMin = document.createElement("input")
-// inputSliderMin.classList.add('inputSlider');
-// inputSliderMin.type = "range";
-// inputSliderMin.value = 3;
-// inputSliderMin.max = 12;
-// inputSliderMin.min = 0;
-// inputSliderMin.step = 1;
-// inputSliderMin.oninput = function () {
-//     console.log(this.value)
-//     console.log(inputSliderMax.value)
-//     if (parseInt(this.value) > parseInt(inputSliderMax.value)) {
-//         inputSliderMax.value = this.value;
-//         console.log('in loop')
-//     }
-//     labelSliderMin.innerHTML = this.value + "s";
-//     labelSliderMax.innerHTML = inputSliderMax.value + "s";
-// }
-// containerSliderMin.appendChild(inputSliderMin);
-
-// let btnSettingMin =document.createElement("div");
-// btnSettingMin.classList.add('btnSettings');
-// containerSliderMin.appendChild(btnSettingMin);
-// // /
-// btnSettingMin.addEventListener('click', function(event) {
-//   containerSliderMin.classList.toggle('clicked');
-// });
-
-// function isModalOpen(){
-//     // console.log(document.body.classList.contains("artdeco-modal-is-open"))
-//    return document.body.classList.contains("artdeco-modal-is-open")
-// }
-
